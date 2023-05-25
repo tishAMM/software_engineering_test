@@ -55,6 +55,23 @@ public class ProfileRepository {
         }
 
     }
+	
+	    public Profile getByLogin(String login) {
+        String query = "select * from profile where login = ?";
+        Connection connection = ConnectionFactory.getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return rsToProfile(resultSet);
+            }
+            return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public void update(Profile profile) {
